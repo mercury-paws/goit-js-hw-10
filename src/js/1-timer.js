@@ -10,6 +10,7 @@ const secondsElement = document.querySelector('[data-seconds]');
 const daysElement = document.querySelector('[data-days]');
 
 let userSelectedDate = '';
+
 const fp = flatpickr('#datetime-picker', {
   enableTime: true,
   time_24hr: true,
@@ -33,19 +34,28 @@ const fp = flatpickr('#datetime-picker', {
       startBtn.disabled = false;
     }
     console.log(userSelectedDate);
-    let ms = userSelectedDate - Date.now();
-    const { days, hours, minutes, seconds } = convertMs(ms);
-    updateClockFace({ days, hours, minutes, seconds });
+    if (userSelectedDate >= Date.now()) {
+      let ms = userSelectedDate - Date.now();
+      updateClockFace(convertMs(ms));
+    }
   },
 });
 
-startBtn.addEventListener('click', () => {
+startBtn.addEventListener('click', makeTick);
+
+function makeTick() {
   let interval = setInterval(() => {
     let ms = userSelectedDate - Date.now();
-    const { days, hours, minutes, seconds } = convertMs(ms);
-    updateClockFace({ days, hours, minutes, seconds });
+    updateClockFace(convertMs(ms));
   }, 1000);
-});
+}
+
+function stopTick() {
+  const { days, hours, minutes, seconds } = convertMs(ms);
+  if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
+    clearInterval(interval);
+  }
+}
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
