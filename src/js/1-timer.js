@@ -8,9 +8,10 @@ const hoursElement = document.querySelector('[data-hours]');
 const minutesElement = document.querySelector('[data-minutes]');
 const secondsElement = document.querySelector('[data-seconds]');
 const daysElement = document.querySelector('[data-days]');
+const input = document.getElementById('datetime-picker');
 
 let userSelectedDate = '';
-
+startBtn.disabled = true;
 const fp = flatpickr('#datetime-picker', {
   enableTime: true,
   time_24hr: true,
@@ -21,11 +22,11 @@ const fp = flatpickr('#datetime-picker', {
     console.log(selectedDates[0]);
     userSelectedDate = selectedDates[0].getTime();
     const currentDateTimestamp = Date.now();
-    if (userSelectedDate < currentDateTimestamp) {
-      iziToast.show({
-        theme: 'dark',
+    if (userSelectedDate <= currentDateTimestamp) {
+      iziToast.error({
+        color: 'red',
         message: 'Please choose a date in the future',
-        position: 'center',
+        position: 'topRight',
         progressBarColor: 'rgb(0, 255, 184)',
         timeout: 2000,
       });
@@ -34,27 +35,24 @@ const fp = flatpickr('#datetime-picker', {
       startBtn.disabled = false;
     }
     console.log(userSelectedDate);
-    if (userSelectedDate >= Date.now()) {
-      let ms = userSelectedDate - Date.now();
-      updateClockFace(convertMs(ms));
-    }
   },
 });
 
 startBtn.addEventListener('click', makeTick);
 
+let interval;
+
 function makeTick() {
-  let interval = setInterval(() => {
-    let ms = userSelectedDate - Date.now();
+  interval = setInterval(() => {
+    const ms = userSelectedDate - Date.now();
+    if (ms <= 0) {
+      clearInterval(interval);
+      return;
+    }
     updateClockFace(convertMs(ms));
   }, 1000);
-}
-
-function stopTick() {
-  const { days, hours, minutes, seconds } = convertMs(ms);
-  if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
-    clearInterval(interval);
-  }
+  startBtn.disabled = true;
+  input.setAttribute('disabled', 'true');
 }
 
 function convertMs(ms) {
@@ -75,9 +73,14 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
+
+function addLeadingZero(value) {
+  return String(value).padStart(2, '0');
+}
+
 function updateClockFace({ days, hours, minutes, seconds }) {
-  daysElement.textContent = `${days}`;
-  hoursElement.textContent = `${hours}`;
-  minutesElement.textContent = `${minutes}`;
-  secondsElement.textContent = `${seconds}`;
+  daysElement.textContent = `${addLeadingZero(days)}`;
+  hoursElement.textContent = `${addLeadingZero(hours)}`;
+  minutesElement.textContent = `${addLeadingZero(minutes)}`;
+  secondsElement.textContent = `${addLeadingZero(seconds)}`;
 }

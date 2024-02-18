@@ -3,3 +3,46 @@
   font-style: italic;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+.timer {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+}
+.label {
+  font-size: 16px;
+  font-family: Montserrat;
+}
+button {
+  background-color: #4e75ff;
+  width: 75px;
+  height: 40px;
+  color: #ffffff;
+  border-radius: 8px;
+}
+button:hover {
+  background-color: #6c8cff;
+}
+input {
+  width: 252px;
+  height: 40px;
+  border-radius: 8px;
+  padding-left: 20px;
+  font-size: 16px;
+}
+input:hover {
+  border-color: #000000;
+}
+h1 {
+  font-family: Montserrat;
+  font-size: 20px;
+}
+button:disabled {
+  background-color: #cfcfcf;
+  color: #989898;
+  cursor: default;
+}
