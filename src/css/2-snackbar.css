@@ -1,5 +1,27 @@
 .go-home {
-    margin-bottom: 70px;
-    font-style: italic;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
+  margin-bottom: 70px;
+  font-style: italic;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form button {
+  width: 360px;
+  background-color: #4e75ff;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 500px;
+}
+/* fieldset {
+  font-size: 16px;
+  padding: 0;
+  width: 360px;
+  margin: 0;
+  display: block;
+} */
+/* .form label {
+  display: flex;
+  flex-direction: column;
+} */
+/* label input {
+  width: 360px;
+} */
