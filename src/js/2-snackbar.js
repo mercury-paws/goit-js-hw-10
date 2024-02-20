@@ -3,25 +3,24 @@ import 'izitoast/dist/css/iziToast.min.css';
 
 const form = document.querySelector('.form');
 
-form.addEventListener('submit', handleSubmit);
+form.addEventListener('submit', promiseHandler);
 
-function handleSubmit(event) {
+function promiseHandler(event) {
   event.preventDefault();
 
-  const delayInput = document.querySelector('input[name="delay"]');
-  const delay = parseInt(delayInput.value);
+  const inputDelay = document.querySelector('input[name="delay"]');
+  const delay = parseInt(inputDelay.value);
 
-  const stateInputs = document.querySelectorAll('input[name="state"]');
+  const inputState = document.querySelectorAll('input[name="state"]');
   let state;
-  stateInputs.forEach(input => {
+  inputState.forEach(input => {
     if (input.checked) {
       state = input.value;
     }
   });
 
-  if (!delay || !state) {
-    console.log('Please fill out all fields');
-    return;
+  if (!delay || !state || delay === '') {
+    alert('Please fill in all fields');
   }
 
   const promise = new Promise((resolve, reject) => {
@@ -36,12 +35,12 @@ function handleSubmit(event) {
 
   promise
     .then(delay => {
-      iziToast.error({
+      iziToast.success({
         color: 'green',
         message: `Fulfilled promise in ${delay} ms`,
         position: 'topRight',
         progressBarColor: 'rgb(0, 255, 184)',
-        timeout: 1000,
+        timeout: 2000,
       });
     })
     .catch(error => {
@@ -50,7 +49,7 @@ function handleSubmit(event) {
         message: `Rejected promise in ${delay} ms`,
         position: 'topRight',
         progressBarColor: 'rgb(0, 255, 184)',
-        timeout: 1000,
+        timeout: 2000,
       });
     });
 }
